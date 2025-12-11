@@ -1,0 +1,106 @@
+package viva2_q3;
+
+import java.util.Scanner;
+
+public class VIVA2_Q3 {
+    //calc mean of array
+    public static double getMean(double[] numbers) {
+        double sum = 0;
+        for (int i = 0; i < numbers.length; i++) {
+            sum += numbers[i];
+        }
+        return sum / numbers.length;
+    }
+
+    public static int getBestRemovalIndex(double[] numbers, double targetMean) {
+        int bestIndex = 0;
+        double bestDifference = Double.MAX_VALUE; // huge no.
+
+        for (int i = 0; i < numbers.length; i++) {
+            double[] newArr = new double[numbers.length - 1]; //new array, get rid of number[i]
+            int idx = 0;
+            for (int j = 0; j < numbers.length; j++) { //put other no. into new arr
+                if (j != i) {
+                    newArr[idx] = numbers[j];
+                    idx++;
+                }
+            }
+
+            double newMean = getMean(newArr); // mean for new arr
+            double diff = Math.abs(newMean - targetMean); //diff only +ve no.
+
+            if (diff < bestDifference) {
+                bestDifference = diff;
+                bestIndex = i;
+            }
+        }
+        return bestIndex;
+    }
+
+    public static double getDifference(double[] numbers, double targetMean) {
+        double mean = getMean(numbers);
+        return Math.abs(mean - targetMean); //calc diff btw mean & target mean
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // 1. get user input
+        System.out.print("Enter total number of samples: ");
+        int totalNumberOfSamples = sc.nextInt();
+
+        int maxRemovable;
+        while (true) {
+            System.out.print("Enter maximum removable samples: ");
+            maxRemovable = sc.nextInt();
+            if (maxRemovable < totalNumberOfSamples) {
+                break;
+            } else {
+                System.out.println("Error: Maximum removable must be less than total number of samples. Please enter again.");
+            }
+        }
+
+        System.out.print("Enter target mean: ");
+        double targetMean = sc.nextDouble();
+
+        System.out.println("Enter samples:");
+        double[] sampleList = new double[totalNumberOfSamples];
+        for (int i = 0; i < totalNumberOfSamples; i++) {
+            sampleList[i] = sc.nextDouble();
+        }
+
+        // 2. remove process
+        int removalCount = 0; //counter to calc how many sample we rmv
+        
+        while (removalCount < maxRemovable) {
+            if (sampleList.length <= 1) break; //must>1
+
+            int removeIndex = getBestRemovalIndex(sampleList, targetMean);
+            double removedValue = sampleList[removeIndex];
+
+            // new array after removal
+            double[] newSampleList = new double[sampleList.length - 1];
+            int idx = 0;
+            for (int i = 0; i < sampleList.length; i++) {
+                if (i != removeIndex) {
+                    newSampleList[idx] = sampleList[i];
+                    idx++;
+                }
+            }
+            sampleList = newSampleList;
+
+            removalCount++;
+
+            System.out.printf("Removed %.2f, new mean : %.2f%n", removedValue, getMean(sampleList));
+        }
+
+        // 3. output
+        double finalMean = getMean(sampleList);
+        double difference = getDifference(sampleList, targetMean);
+
+        System.out.printf("Final mean = %.2f%n", finalMean);
+        System.out.printf("Difference with target mean = %.2f%n", difference);
+
+        sc.close();
+    }
+}
