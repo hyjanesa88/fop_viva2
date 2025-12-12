@@ -61,7 +61,8 @@ public class VivaQ4 {
         double area = getArea(a,b,c);
 
         // Display results
-        System.out.println("\nTriangle Info");
+        System.out.println("\nTriangle Info ↓");
+        System.out.println();
         System.out.println("Side A: " + df.format(a));
         System.out.println("Side B: " + df.format(b));
         System.out.println("Side C: " + df.format(c));
