@@ -1,0 +1,89 @@
+import java.util.*;
+
+public class V2_Q2 {
+    
+    // Step 1: insert random symbols
+    public static String insert(String str) {
+        Random rand = new Random();
+        char[] symbols = {'@', '#', '$', '%', '&', '!'};
+        
+        StringBuilder sb = new StringBuilder();
+        
+        for (int i = 0; i < str.length(); i++) {
+            sb.append(str.charAt(i));
+            sb.append(symbols[rand.nextInt(symbols.length)]);
+        }
+        
+        return sb.toString();
+        
+    }
+    
+    //Step 2: break, reverse halves, rejoin
+    public static String breakAndFlip(String str) {
+        int len = str.length();
+        int mid = len / 2;
+        
+        if (len % 2 == 0) {
+            //even
+            String first = str.substring(0, mid);
+            String last = str.substring(mid);
+            
+            return reverse(first) + reverse(last);
+        }else {
+            
+            //Odd
+            String first = str.substring(0,mid);
+            String middle = str.substring(mid, mid + 1);
+            String last = str.substring(mid + 1);
+            
+            return reverse(first) + middle + reverse(last);
+        }
+    }
+    
+    //Helper method to reverse a string
+    public static String reverse(String s) {
+        return new StringBuilder(s).reverse().toString();
+    }
+    
+    //Step 3: ASCII shifting
+    public static String shift(String str) {
+        StringBuilder sb = new StringBuilder();
+        
+        for(int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            
+            if (Character.isUpperCase(ch)) {
+                sb.append((char)(ch + 10 + i));
+            }
+            
+            else if (Character.isLowerCase(ch)) {
+                sb.append((char)(ch + 3 + i));
+            }
+            
+            else if (Character.isDigit(ch)) {
+                sb.append((char)(ch + 10 + i));
+            }
+            
+            else {
+                //Symbols unchanged
+                sb.append(ch);
+            }
+        }
+        
+        return sb.toString();
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.print("Enter a message: ");
+        String msg = sc.nextLine();
+        
+        //Perform the 3 steps
+        String s1 = insert(msg);
+        String s2 = breakAndFlip(s1);
+        String finalMsg = shift(s2);
+        
+        System.out.println("Encoded Message: " + finalMsg);
+    }
+}
