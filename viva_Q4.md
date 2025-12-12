@@ -1,6 +1,5 @@
-*Enjoy my code*
-
 ```java
+
 import java.util.Scanner;
 import java.text.DecimalFormat;
 
