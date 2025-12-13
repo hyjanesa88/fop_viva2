@@ -1,0 +1,142 @@
+import java.util.Scanner;
+
+public class V2_Q5 {
+    
+    //Convert a number from ANY base to base 10 (supports fraction + negative)
+    public static double convertToBaseTen(String num, int base) {
+        num = num.toUpperCase();
+        
+        boolean negative = false;
+        if (num.charAt(0) == '-') {
+            negative = true;
+            num = num.substring(1);
+        }
+        
+        String[] parts = num.split("\\.");
+        String intPart = parts[0];
+        String fracPart = (parts.length > 1) ? parts[1] : "";
+        
+        double decimalValue = 0;
+        
+        //Convert integer part
+        for (int i = 0; i < intPart.length(); i++) {
+            int value = charToValue(intPart.charAt(i));
+            decimalValue = decimalValue * base + value;
+        }
+        
+        //Convert fractional part
+        double placeValue = base;
+        for (int i = 0; i < fracPart.length(); i++) {
+            int value = charToValue(fracPart.charAt(i));
+            decimalValue += value / placeValue;
+            placeValue *= base;
+        }
+        
+        return negative ? -decimalValue : decimalValue;
+    }
+    
+    // Convert from base 10 to ANY base (supports fractions + negative)
+    public static String convertFromBaseTen(double num, int base) {
+        if (num == 0) return "0";
+        
+        boolean negative = num < 0;
+        num = Math.abs(num);
+        
+        long intPart = (long) num;
+        double fracPart = num - intPart;
+        
+        //Convert integer part
+        StringBuilder intResult = new StringBuilder();
+        while (intPart > 0) {
+            int remainder = (int) (intPart % base);
+            intResult.insert(0, valueToChar(remainder));
+            intPart /= base;
+        }
+        
+        //Convert fractional part (max 8 digits)
+        StringBuilder fracResult = new StringBuilder();
+        int count = 0;
+        while (fracPart > 0 && count < 8) {
+            fracPart *= base;
+            int digit = (int) fracPart;
+            fracResult.append(valueToChar(digit));
+            fracPart -= digit;
+            count++;
+        }
+        
+        String finalResult = intResult.toString();
+        
+        if (fracResult.length() > 0) {
+            finalResult += "." + fracResult.toString();
+        }
+        
+        return negative ? "-" + finalResult : finalResult;
+    }
+    
+    //Convert character -> numerical value
+    public static int charToValue(char c) {
+        if (Character.isDigit(c)) return c - '0';
+        return c - 'A' + 10;
+    }
+    
+    //Convert numerical value -> character (0-9, A-Z)
+    public static char valueToChar(int val) {
+        if (val < 10) return (char) ('0' + val);
+        return (char) ('A' + (val - 10));
+    }
+    
+    //Validate that digits are legal for the base
+    public static boolean isValidNumber(String num, int base) {
+        num = num.toUpperCase();
+        
+        if (num.charAt(0) == '-') {
+            num = num.substring(1);
+        }
+        
+    for (char c : num.toCharArray()) {    
+        if (c == '.') continue;
+            int value = charToValue(c);
+            if (value >= base) return false;
+    }
+    
+    return true;
+    }
+    
+public static void main (String[] args) {
+    Scanner sc = new Scanner(System.in);
+    
+    while(true) {
+    
+    System.out.print("Enter the number: ");;
+    String number = sc.nextLine();
+    
+    System.out.print("Enter its base: ");
+    int base1 = sc.nextInt();
+    
+    if (!isValidNumber(number, base1)) {
+        System.out.println("Invalid number for base " + base1);
+        sc.nextLine();
+        continue;
+    }
+    
+    System.out.print("Enter target base: ");
+    int base2 = sc.nextInt();
+    
+    double baseTenValue = convertToBaseTen(number, base1);
+    String result = convertFromBaseTen(baseTenValue, base2);
+    
+    System.out.println("Converted number: " + result);
+    
+        System.out.print("\nConvert another? (yes/no): ");
+        sc.nextLine();
+        String choice = sc.nextLine();
+        
+        if (choice.equalsIgnoreCase("no") || choice.equalsIgnoreCase ("n")) {
+            break;
+        }
+}
+    
+    System.out.println("Goodbye!");
+    sc.close();
+}
+}
