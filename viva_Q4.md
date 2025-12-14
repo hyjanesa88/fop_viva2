@@ -52,15 +52,15 @@ public class VivaQ4 {
             return;
         }
 
-        // Calculate all angles
+        //Calculate all angles
         double angleA = getAngleBySSS(b, c, a); // Angle opposite side a
         double angleB = getAngleBySSS(a, c, b); // Angle opposite side b
         double angleC = getAngleBySSS(a, b, c); // Angle opposite side c
 
-        // Calculate area
+        //Calculate area
         double area = getArea(a,b,c);
 
-        // Display results
+        //Display results
         System.out.println("\nTriangle Info ↓");
         System.out.println();
         System.out.println("Side A: " + df.format(a));
@@ -71,7 +71,7 @@ public class VivaQ4 {
         System.out.println("Angle AB: " + df.format(angleC));
         System.out.println("Area of Triangle: " + df.format(area));
     }
-    // Handle SAS triangle calculation
+    //Handle SAS triangle calculation
     public static void handleSAS() {
         System.out.print("Enter side 1: ");
         double side1 = scanner.nextDouble();
@@ -80,7 +80,7 @@ public class VivaQ4 {
         System.out.print("Enter side 2: ");
         double side2 = scanner.nextDouble();
 
-        // Calculate the third side
+        //Calculate the third side
         double side3 = getSideBySAS(side1, angle, side2);
 
         if (!isValidTriangle(side1, side2, side3)) {
@@ -88,12 +88,12 @@ public class VivaQ4 {
             return;
         }
 
-        // Calculate remaining angles
+        //Calculate remaining angles
         double angle1 = getAngleBySSS(side2, side3, side1); // Angle opposite side1
         double angle2 = getAngleBySSS(side1, side3, side2); // Angle opposite side2
         double angle3 = angle; // The given angle
 
-        // Calculate area
+        //Calculate area
         double area = getArea(side1, side2, side3);
 
         System.out.println("\nTriangle Info ↓");
