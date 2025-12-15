@@ -47,7 +47,8 @@ public class v2q6 {
                     middlechar = String.valueOf((char) i);//convert ascii to char
                 }else {
                     for (int j = 0; j < freq[i] / 2; j++) {
-                        halfArr[index++] = (char) i; //add the char to the array
+                        halfArr[index] = (char) i; //add the char to the array
+                        index ++;
                     }
                 }
             }
